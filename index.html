@@ -68,7 +68,6 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   border-radius: 50%;
   mix-blend-mode: screen;
-  will-change: transform;
 }
 
 .b1 {
@@ -77,7 +76,6 @@ a { color: inherit; text-decoration: none; }
   left: -6vw;
   top: -8vw;
   background: radial-gradient(circle at 30% 30%, var(--accent-2), transparent 60%);
-  animation: drift1 22s var(--ease) infinite alternate;
 }
 
 .b2 {
@@ -86,7 +84,6 @@ a { color: inherit; text-decoration: none; }
   right: -8vw;
   top: 6vw;
   background: radial-gradient(circle at 60% 40%, var(--accent), transparent 62%);
-  animation: drift2 26s var(--ease) infinite alternate;
 }
 
 .b3 {
@@ -95,13 +92,8 @@ a { color: inherit; text-decoration: none; }
   left: 22vw;
   bottom: -14vw;
   background: radial-gradient(circle at 50% 50%, var(--accent-3), transparent 64%);
-  animation: drift3 30s var(--ease) infinite alternate;
   opacity: .7;
 }
-
-@keyframes drift1 { to { transform: translate3d(10vw, 8vh, 0) scale(1.15); } }
-@keyframes drift2 { to { transform: translate3d(-8vw, 10vh, 0) scale(1.1); } }
-@keyframes drift3 { to { transform: translate3d(6vw, -10vh, 0) scale(1.2); } }
 
 .grain {
   position: fixed;
@@ -152,10 +144,7 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: .42em;
   text-transform: uppercase;
   color: var(--muted);
-  animation: fadepulse 2.6s ease-in-out infinite;
 }
-
-@keyframes fadepulse { 50% { opacity: .35; } }
 
 .card {
   position: relative;
@@ -166,12 +155,8 @@ a { color: inherit; text-decoration: none; }
   backdrop-filter: blur(22px) saturate(1.4);
   border: 1px solid var(--line);
   box-shadow: 0 26px 70px -26px rgba(0, 0, 0, .92), inset 0 1px 0 rgba(255, 255, 255, .06);
-  transform-style: preserve-3d;
-  transition: transform .16s var(--ease);
   text-align: center;
 }
-
-.card > * { transform: translateZ(26px); }
 
 .avatar-wrap {
   width: 88px;
@@ -220,18 +205,6 @@ a { color: inherit; text-decoration: none; }
   color: #aab0c6;
   letter-spacing: .02em;
 }
-
-.tag .cursor {
-  display: inline-block;
-  width: 7px;
-  height: 13px;
-  margin-left: 3px;
-  vertical-align: -1px;
-  background: var(--accent);
-  animation: caret .9s steps(1) infinite;
-}
-
-@keyframes caret { 50% { opacity: 0; } }
 
 .bio {
   margin: 16px auto 0;
@@ -296,23 +269,9 @@ a { color: inherit; text-decoration: none; }
   height: 19px;
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(12px);
-}
-
-.in .reveal { animation: rise .6s var(--ease) forwards; }
-
-@keyframes rise { to { opacity: 1; transform: none; } }
-
 @media (max-width: 420px) {
   .card { padding: 26px 22px 22px; }
   .name { font-size: 25px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * { animation: none !important; transition: none !important; }
-  .reveal { opacity: 1; transform: none; }
 }
 </style>
 </head>
@@ -338,20 +297,20 @@ a { color: inherit; text-decoration: none; }
 
 <main class="stage">
   <section class="card" id="card" aria-label="profile">
-    <div class="avatar-wrap reveal">
+    <div class="avatar-wrap">
       <div class="avatar avatar-fallback" id="avatar">A</div>
     </div>
 
-    <h1 class="name reveal" id="name">Alisdair</h1>
-    <div class="handle reveal" id="handle">@alisdairr</div>
+    <h1 class="name" id="name">Alisdair</h1>
+    <div class="handle" id="handle">@alisdairr</div>
 
-    <div class="tag reveal"><span id="typed"></span><span class="cursor"></span></div>
+    <div class="tag" id="tagline"></div>
 
-    <p class="bio reveal" id="bio"></p>
+    <p class="bio" id="bio"></p>
 
-    <div class="rule reveal"></div>
+    <div class="rule"></div>
 
-    <div class="socials reveal" id="socials"></div>
+    <div class="socials" id="socials"></div>
   </section>
 </main>
 
@@ -359,12 +318,8 @@ a { color: inherit; text-decoration: none; }
 const profile = {
   name: "Alisdair",
   handle: "@alisdairr",
+  tagline: "building on the edge.",
   discordId: "1414200535044853760",
-  taglines: [
-    "building on the edge.",
-    "shipping > talking.",
-    "vr dev, 15.",
-  ],
   bio: '15 y/o developer from Scotland. I build for '
     + '<a class="lk" href="https://discord.gg/feverdreamvr" target="_blank" rel="noopener">Feverdream</a>, '
     + '<a class="lk" href="https://discord.gg/wondervr" target="_blank" rel="noopener">Wonder</a> and '
@@ -385,7 +340,6 @@ const icons = {
 };
 
 const video = document.getElementById('bgvideo');
-const card = document.getElementById('card');
 const enter = document.getElementById('enter');
 
 function playVideo() {
@@ -406,6 +360,7 @@ function startBackground() {
 function renderProfile() {
   document.getElementById('name').textContent = profile.name;
   document.getElementById('handle').textContent = profile.handle;
+  document.getElementById('tagline').textContent = profile.tagline;
   document.getElementById('avatar').textContent = (profile.name || 'A').trim().charAt(0).toUpperCase() || 'A';
   document.getElementById('bio').innerHTML = profile.bio;
 
@@ -433,60 +388,8 @@ function loadAvatar() {
     .catch(() => {});
 }
 
-function staggerReveals() {
-  document.querySelectorAll('.reveal').forEach((el, i) => {
-    el.style.animationDelay = (0.07 + i * 0.09) + 's';
-  });
-}
-
-function typeTaglines() {
-  const el = document.getElementById('typed');
-  const lines = profile.taglines;
-  let line = 0;
-  let chars = 0;
-  let deleting = false;
-
-  function step() {
-    const current = lines[line];
-    el.textContent = current.slice(0, chars);
-
-    if (!deleting && chars < current.length) {
-      chars++;
-      setTimeout(step, 42 + Math.random() * 40);
-    } else if (!deleting && chars === current.length) {
-      deleting = true;
-      setTimeout(step, 1900);
-    } else if (deleting && chars > 0) {
-      chars--;
-      setTimeout(step, 22);
-    } else {
-      deleting = false;
-      line = (line + 1) % lines.length;
-      setTimeout(step, 240);
-    }
-  }
-
-  step();
-}
-
-function enableTilt() {
-  let frame;
-  window.addEventListener('mousemove', e => {
-    if (matchMedia('(pointer:coarse)').matches) return;
-    cancelAnimationFrame(frame);
-    frame = requestAnimationFrame(() => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - (rect.left + rect.width / 2)) / rect.width;
-      const y = (e.clientY - (rect.top + rect.height / 2)) / rect.height;
-      card.style.transform = `rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateZ(0)`;
-    });
-  });
-  window.addEventListener('mouseleave', () => { card.style.transform = ''; });
-}
-
 function enterSite() {
   enter.classList.add('hide');
-  document.body.classList.add('in');
   if (video) {
     video.muted = false;
     video.volume = 0.7;
@@ -499,9 +402,6 @@ function enterSite() {
 startBackground();
 renderProfile();
 loadAvatar();
-staggerReveals();
-typeTaglines();
-enableTilt();
 
 enter.addEventListener('click', enterSite);
 window.addEventListener('keydown', e => {
