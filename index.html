@@ -190,9 +190,6 @@ a{color:inherit; text-decoration:none}
 <div class="scan"></div>
 <div class="grain"></div>
 
-<!-- optional ambient audio: drop assets/ambient.mp3 -->
-<audio id="ambient" loop preload="auto"><source src="assets/ambient.mp3" type="audio/mpeg" /></audio>
-
 <!-- enter splash -->
 <div class="enter" id="enter">
   <span class="enter-label">click to enter</span>
@@ -346,14 +343,14 @@ window.addEventListener('mousemove',e=>{
 });
 window.addEventListener('mouseleave',()=>{ card.style.transform=''; });
 
-/* enter splash → reveal + start video/audio (user gesture unlocks autoplay w/ sound) */
+/* enter splash → reveal + unmute the video (the click is the gesture that
+   lets the browser play sound; muted autoplay ran before this). */
 const enter=document.getElementById('enter');
-const audio=document.getElementById('ambient');
 function crossThreshold(){
   enter.classList.add('hide');
   document.body.classList.add('in');
-  const v=document.getElementById('bgvideo'); if(v) v.play?.().catch(()=>{});
-  audio.muted=false; audio.play().catch(()=>{});   // plays only if assets/ambient.mp3 exists
+  const v=document.getElementById('bgvideo');
+  if(v){ v.muted=false; v.volume=0.7; try{ v.currentTime=0; }catch(e){} v.play?.().catch(()=>{}); }
   window.removeEventListener('click',crossThreshold);
 }
 enter.addEventListener('click',crossThreshold);
