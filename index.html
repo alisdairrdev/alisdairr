@@ -12,14 +12,9 @@
 
 <style>
 :root {
-  --bg: #050609;
-  --ink: #eef2ff;
-  --muted: #8b93ad;
-  --line: rgba(255, 255, 255, .12);
-  --panel: rgba(10, 13, 20, .42);
+  --ink: #f3f5ff;
+  --muted: #c3c8dd;
   --accent: #4be3ff;
-  --accent-2: #7c5cff;
-  --accent-3: #ff5c8a;
   --ease: cubic-bezier(.2, .7, .2, 1);
 }
 
@@ -29,7 +24,7 @@ html, body { height: 100%; }
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: #020306;
   color: var(--ink);
   font-family: "Martian Mono", ui-monospace, monospace;
   -webkit-font-smoothing: antialiased;
@@ -56,72 +51,13 @@ a { color: inherit; text-decoration: none; }
   filter: saturate(1.05) contrast(1.03);
 }
 
-.aurora {
-  position: absolute;
-  inset: -20%;
-  filter: blur(70px) saturate(1.2);
-  opacity: .4;
-  mix-blend-mode: screen;
-}
-
-.aurora span {
-  position: absolute;
-  border-radius: 50%;
-  mix-blend-mode: screen;
-}
-
-.b1 {
-  width: 52vw;
-  height: 52vw;
-  left: -6vw;
-  top: -8vw;
-  background: radial-gradient(circle at 30% 30%, var(--accent-2), transparent 60%);
-}
-
-.b2 {
-  width: 46vw;
-  height: 46vw;
-  right: -8vw;
-  top: 6vw;
-  background: radial-gradient(circle at 60% 40%, var(--accent), transparent 62%);
-}
-
-.b3 {
-  width: 40vw;
-  height: 40vw;
-  left: 22vw;
-  bottom: -14vw;
-  background: radial-gradient(circle at 50% 50%, var(--accent-3), transparent 64%);
-  opacity: .7;
-}
-
-.grain {
-  position: fixed;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  opacity: .05;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-.scan {
-  position: fixed;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  opacity: .3;
-  mix-blend-mode: overlay;
-  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, .03) 0 1px, transparent 1px 3px);
-}
-
 .stage {
   position: relative;
   z-index: 4;
   height: 100%;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: 32px 24px;
 }
 
 .enter {
@@ -146,31 +82,22 @@ a { color: inherit; text-decoration: none; }
   color: var(--muted);
 }
 
-.card {
-  position: relative;
-  width: min(410px, 92vw);
-  padding: 30px 30px 26px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, .05), transparent 40%), var(--panel);
-  -webkit-backdrop-filter: blur(22px) saturate(1.4);
-  backdrop-filter: blur(22px) saturate(1.4);
-  border: 1px solid var(--line);
-  box-shadow: 0 26px 70px -26px rgba(0, 0, 0, .92), inset 0 1px 0 rgba(255, 255, 255, .06);
+.profile {
+  width: min(360px, 92vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
-.avatar-wrap {
-  width: 88px;
-  height: 88px;
-  margin: 6px auto 0;
-  position: relative;
-}
-
 .avatar {
-  width: 88px;
-  height: 88px;
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
   object-fit: cover;
   background: #0a0d16 center / cover;
-  border: 1px solid rgba(255, 255, 255, .22);
+  border: 2px solid rgba(255, 255, 255, .3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .55);
 }
 
 .avatar-fallback {
@@ -178,115 +105,101 @@ a { color: inherit; text-decoration: none; }
   place-items: center;
   font-family: "Bricolage Grotesque";
   font-weight: 700;
-  font-size: 36px;
+  font-size: 40px;
   color: var(--accent);
 }
 
-.name {
+.username {
+  margin: 18px 0 0;
   font-family: "Bricolage Grotesque", sans-serif;
   font-weight: 700;
-  font-size: 29px;
-  margin: 20px 0 4px;
-  letter-spacing: .04em;
-  text-transform: uppercase;
+  font-size: 30px;
   line-height: 1;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2), #eaf6ff, var(--accent-3), var(--accent-2), var(--accent));
+  letter-spacing: .01em;
+  background: linear-gradient(90deg, #ff5c5c, #ffb84d, #ffe14d, #5cff8f, #4be3ff, #7c5cff, #ff5cf0, #ff5c5c);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  animation: nameshine 8s linear infinite;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, .5));
+  animation: rainbow 6s linear infinite;
 }
 
-@keyframes nameshine {
-  to { background-position: -200% center; }
-}
-
-.handle {
-  font-size: 11.5px;
-  color: var(--accent);
-  letter-spacing: .14em;
-}
-
-.tag {
-  margin: 14px auto 0;
-  min-height: 18px;
-  font-size: 11.5px;
-  color: #aab0c6;
-  letter-spacing: .02em;
+@keyframes rainbow {
+  to { background-position: 200% center; }
 }
 
 .bio {
-  margin: 16px auto 0;
-  max-width: 34ch;
+  margin: 10px 0 0;
   font-size: 12px;
-  line-height: 1.85;
-  color: #b8bed4;
-}
-
-.bio .lk {
-  color: var(--ink);
-  font-weight: 500;
-  padding-bottom: 1px;
-  box-shadow: inset 0 -1px 0 rgba(75, 227, 255, .55);
-  transition: .18s var(--ease);
-}
-
-.bio .lk:hover {
-  color: #031014;
-  background: var(--accent);
-  box-shadow: none;
-}
-
-.bio .thr {
-  color: var(--accent-2);
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-shadow: 0 0 16px rgba(124, 92, 255, .55);
-}
-
-.rule {
-  height: 1px;
-  margin: 22px 0 18px;
-  background: linear-gradient(90deg, transparent, var(--line), transparent);
+  color: var(--muted);
+  letter-spacing: .04em;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .7);
 }
 
 .socials {
+  margin: 22px 0 0;
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .socials a {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, .02);
-  color: var(--muted);
-  transition: .2s var(--ease);
+  border-radius: 50%;
+  color: var(--ink);
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .14);
+  backdrop-filter: blur(6px);
+  transition: .18s var(--ease);
 }
 
 .socials a:hover {
-  color: var(--accent);
-  border-color: rgba(75, 227, 255, .4);
-  background: rgba(75, 227, 255, .06);
+  background: rgba(255, 255, 255, .2);
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, .3);
 }
 
-.socials svg {
-  width: 19px;
-  height: 19px;
+.socials svg { width: 18px; height: 18px; }
+
+.links {
+  margin: 22px 0 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-@media (max-width: 420px) {
-  .card { padding: 26px 22px 22px; }
-  .name { font-size: 25px; }
+.links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 13px 16px;
+  border-radius: 13px;
+  font-size: 13px;
+  letter-spacing: .03em;
+  color: var(--ink);
+  background: rgba(255, 255, 255, .07);
+  border: 1px solid rgba(255, 255, 255, .12);
+  backdrop-filter: blur(8px);
+  transition: .18s var(--ease);
 }
+
+.links a:hover {
+  background: rgba(255, 255, 255, .15);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, .28);
+}
+
+.links svg { width: 16px; height: 16px; opacity: .85; }
 
 @media (prefers-reduced-motion: reduce) {
-  .name { animation: none; }
+  .username { animation: none; }
 }
 </style>
 </head>
@@ -296,54 +209,37 @@ a { color: inherit; text-decoration: none; }
   <video id="bgvideo" autoplay muted loop playsinline preload="auto" onerror="this.style.display='none'">
     <source src="assets/background.mp4" type="video/mp4" />
   </video>
-  <div class="aurora">
-    <span class="b1"></span>
-    <span class="b2"></span>
-    <span class="b3"></span>
-  </div>
 </div>
-
-<div class="scan"></div>
-<div class="grain"></div>
 
 <div class="enter" id="enter">
   <span class="enter-label">click to enter</span>
 </div>
 
 <main class="stage">
-  <section class="card" id="card" aria-label="profile">
-    <div class="avatar-wrap">
-      <div class="avatar avatar-fallback" id="avatar">A</div>
-    </div>
-
-    <h1 class="name" id="name">Alisdair</h1>
-    <div class="handle" id="handle">@alisdairr</div>
-
-    <div class="tag" id="tagline"></div>
-
+  <section class="profile" aria-label="profile">
+    <div class="avatar avatar-fallback" id="avatar">A</div>
+    <h1 class="username" id="username">alisdairr</h1>
     <p class="bio" id="bio"></p>
-
-    <div class="rule"></div>
-
     <div class="socials" id="socials"></div>
+    <nav class="links" id="links"></nav>
   </section>
 </main>
 
 <script>
 const profile = {
-  name: "Alisdair",
-  handle: "@alisdairr",
-  tagline: "building on the edge.",
+  username: "alisdairr",
+  bio: "15 y/o developer from scotland",
   discordId: "1414200535044853760",
-  bio: '15 y/o developer from Scotland. I build for '
-    + '<a class="lk" href="https://discord.gg/feverdreamvr" target="_blank" rel="noopener">Feverdream</a>, '
-    + '<a class="lk" href="https://discord.gg/wondervr" target="_blank" rel="noopener">Wonder</a> and '
-    + '<a class="lk" href="https://discord.gg/MCJNftwGm" target="_blank" rel="noopener">ChimpLab</a>, '
-    + 'and building my own game, <span class="thr">THRESHOLD</span>.',
   socials: [
     { icon: "github", url: "https://github.com/alisdairrdev" },
     { icon: "discord", url: "https://discord.gg/P2CxH3Q7cJ" },
     { icon: "mail", url: "mailto:alisdairr@proton.me" },
+  ],
+  links: [
+    { label: "Feverdream", url: "https://discord.gg/feverdreamvr" },
+    { label: "Wonder", url: "https://discord.gg/wondervr" },
+    { label: "ChimpLab", url: "https://discord.gg/MCJNftwGm" },
+    { label: "THRESHOLD", url: "https://discord.gg/P2CxH3Q7cJ" },
   ],
 };
 
@@ -351,7 +247,6 @@ const icons = {
   github: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.04 1.79 2.73 1.27 3.4.97.1-.76.4-1.27.74-1.56-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.28 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z"/></svg>',
   discord: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.25.5a18.3 18.3 0 0 1 4.4 1.4 18 18 0 0 0-16-.02A18 18 0 0 1 8 3.5L7.7 3a19.8 19.8 0 0 0-4.9 1.4C.6 8.9-.15 13.2.1 17.5A19.9 19.9 0 0 0 6.1 20.5l.7-1.1c-.66-.24-1.3-.54-1.9-.9l.47-.35a14 14 0 0 0 12.06 0l.48.35c-.6.36-1.24.66-1.9.9l.7 1.1a19.8 19.8 0 0 0 6-3c.3-4.9-.63-9.1-2.61-13.1ZM8.02 15c-.98 0-1.79-.9-1.79-2s.79-2 1.79-2 1.8.9 1.79 2c0 1.1-.8 2-1.79 2Zm7.95 0c-.98 0-1.79-.9-1.79-2s.79-2 1.79-2 1.8.9 1.79 2c0 1.1-.79 2-1.79 2Z"/></svg>',
   mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3.5 6 8.5 6 8.5-6"/></svg>',
-  link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>',
 };
 
 const video = document.getElementById('bgvideo');
@@ -373,14 +268,15 @@ function startBackground() {
 }
 
 function renderProfile() {
-  document.getElementById('name').textContent = profile.name;
-  document.getElementById('handle').textContent = profile.handle;
-  document.getElementById('tagline').textContent = profile.tagline;
-  document.getElementById('avatar').textContent = (profile.name || 'A').trim().charAt(0).toUpperCase() || 'A';
-  document.getElementById('bio').innerHTML = profile.bio;
+  document.getElementById('username').textContent = profile.username;
+  document.getElementById('bio').textContent = profile.bio;
+  document.getElementById('avatar').textContent = (profile.username || 'A').trim().charAt(0).toUpperCase() || 'A';
 
   document.getElementById('socials').innerHTML = profile.socials.map(s => `
-    <a href="${s.url}" ${s.url.startsWith('http') ? 'target="_blank" rel="noopener"' : ''} aria-label="${s.icon}">${icons[s.icon] || icons.link}</a>`).join('');
+    <a href="${s.url}" ${s.url.startsWith('http') ? 'target="_blank" rel="noopener"' : ''} aria-label="${s.icon}">${icons[s.icon] || ''}</a>`).join('');
+
+  document.getElementById('links').innerHTML = profile.links.map(l => `
+    <a href="${l.url}" target="_blank" rel="noopener">${icons.discord}<span>${l.label}</span></a>`).join('');
 }
 
 function loadAvatar() {
