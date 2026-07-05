@@ -197,6 +197,7 @@ const CONFIG = {
   name:   "Alisdair",
   handle: "@alisdairr",
   loc:    "scotland",
+  discordId: "1414200535044853760",   // avatar is pulled live from Discord via Lanyard
 
   // Short status lines that cycle in the typed slot.
   taglines: [
@@ -250,13 +251,22 @@ document.getElementById('socials').innerHTML = CONFIG.socials.map(s=>`
   <a href="${s.url}" ${s.url.startsWith('http')?'target="_blank" rel="noopener"':''}
      aria-label="${s.icon}">${ICONS[s.icon]||ICONS.link}</a>`).join('');
 
-/* try to load a real avatar photo */
+/* avatar pulled live from Discord via the Lanyard API (profile picture only) */
 (function(){
-  const img = new Image();
-  img.onload = ()=>{ const el=document.getElementById('avatar');
-    el.classList.remove('avatar-fallback'); el.textContent='';
-    el.style.backgroundImage=`url(${img.src})`; };
-  img.src='assets/avatar.jpg';
+  const el = document.getElementById('avatar');
+  fetch(`https://api.lanyard.rest/v1/users/${CONFIG.discordId}`)
+    .then(r => r.json())
+    .then(d => {
+      const u = d && d.data && d.data.discord_user;
+      if(!u || !u.avatar) return;
+      const ext = u.avatar.startsWith('a_') ? 'gif' : 'png';
+      const url = `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.${ext}?size=256`;
+      const img = new Image();
+      img.onload = ()=>{ el.classList.remove('avatar-fallback'); el.textContent='';
+        el.style.backgroundImage=`url(${url})`; };
+      img.src = url;
+    })
+    .catch(()=>{});
 })();
 
 /* stagger delays */
