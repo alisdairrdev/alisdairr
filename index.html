@@ -166,38 +166,6 @@ a { color: inherit; text-decoration: none; }
 
 .socials svg { width: 18px; height: 18px; }
 
-.links {
-  margin: 22px 0 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.links a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  padding: 13px 16px;
-  border-radius: 13px;
-  font-size: 13px;
-  letter-spacing: .03em;
-  color: var(--ink);
-  background: rgba(255, 255, 255, .07);
-  border: 1px solid rgba(255, 255, 255, .12);
-  backdrop-filter: blur(8px);
-  transition: .18s var(--ease);
-}
-
-.links a:hover {
-  background: rgba(255, 255, 255, .15);
-  transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, .28);
-}
-
-.links svg { width: 16px; height: 16px; opacity: .85; }
-
 @media (prefers-reduced-motion: reduce) {
   .username { animation: none; }
 }
@@ -221,7 +189,6 @@ a { color: inherit; text-decoration: none; }
     <h1 class="username" id="username">alisdairr</h1>
     <p class="bio" id="bio"></p>
     <div class="socials" id="socials"></div>
-    <nav class="links" id="links"></nav>
   </section>
 </main>
 
@@ -234,12 +201,6 @@ const profile = {
     { icon: "github", url: "https://github.com/alisdairrdev" },
     { icon: "discord", url: "https://discord.gg/P2CxH3Q7cJ" },
     { icon: "mail", url: "mailto:alisdairr@proton.me" },
-  ],
-  links: [
-    { label: "Feverdream", url: "https://discord.gg/feverdreamvr" },
-    { label: "Wonder", url: "https://discord.gg/wondervr" },
-    { label: "ChimpLab", url: "https://discord.gg/MCJNftwGm" },
-    { label: "THRESHOLD", url: "https://discord.gg/P2CxH3Q7cJ" },
   ],
 };
 
@@ -274,9 +235,6 @@ function renderProfile() {
 
   document.getElementById('socials').innerHTML = profile.socials.map(s => `
     <a href="${s.url}" ${s.url.startsWith('http') ? 'target="_blank" rel="noopener"' : ''} aria-label="${s.icon}">${icons[s.icon] || ''}</a>`).join('');
-
-  document.getElementById('links').innerHTML = profile.links.map(l => `
-    <a href="${l.url}" target="_blank" rel="noopener">${icons.discord}<span>${l.label}</span></a>`).join('');
 }
 
 function loadAvatar() {
