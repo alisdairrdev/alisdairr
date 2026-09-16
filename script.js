@@ -4,7 +4,7 @@ const profile = {
   discordId: "1414200535044853760",
   socials: [
     { icon: "github", url: "https://github.com/alisdairrdev" },
-    { icon: "discord", url: "https://discord.gg/P2CxH3Q7cJ" },
+    { icon: "discord", url: "https://discord.com/invite/feverdreamvr" },
     { icon: "meta", url: "https://communityforums.atmeta.com/users/alisdairr/1846662" },
     { icon: "mail", url: "mailto:alisdairr@proton.me" },
   ],
